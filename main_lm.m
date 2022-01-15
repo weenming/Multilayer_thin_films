@@ -44,7 +44,7 @@ for i = 1:1e3
         end
         %初始mu
 %         mu = max(J.'*J,[],'all')*100;
-        mu=0.01;
+        mu=1;
     end
     %梯度下降
     h1 = -inv(J.'*J+mu*eye(N))*(J.'*f);
@@ -74,9 +74,9 @@ for i = 1:1e3
     end
     improve1 = -sum(fnew1.^2-f.^2);
     improve2 = -sum(fnew2.^2-f.^2);
-    fprintf('descent with gradient is %4f\n',improve1)
-    fprintf('descent with newton is %4f\n',improve2)
-    if improve2 > improve1 && improve2 > 0
+    fprintf('descent with more gradient is %4f\n',improve1)
+    fprintf('descent with more newton is %4f\n',improve2)
+    if improve2 >= improve1 && improve2 > 0
         d=dnew2;
         h=h2;
         mu = mu/2;
@@ -89,7 +89,7 @@ for i = 1:1e3
         mu=mu*2;
     end
     errsum=sum(f.^2);
-    if max(h) < 1e-10 || sqrt(errsum/size(targetpts,1)) < 1e-6
+    if abs(max(h)) < 1e-20 || sqrt(errsum/size(targetpts,1)) < 1e-7
             break;
     end
     fprintf('descent stpelength is %9d\n',max(h))
@@ -97,7 +97,6 @@ for i = 1:1e3
     scatter(i,errsum)
     hold on
     toc
-    
 end
 %% 
 Rout=[];
@@ -109,19 +108,21 @@ end
         
 
 figure()
-plot(targetpts(:,1),Rout,'b');
-hold on
 scatter(targetpts(:,1),targetpts(:,2),'g');
 hold on
+plot(targetpts(:,1),Rout,'color','b');
+hold on
 plot(targetpts(:,1),Rinit,'r');
+legend('Fitted','Target','Initial')
 
 if size(d)==size(dtarget)
     figure()
-    scatter([1:size(d,1)].',d,'b');
+    scatter([1:size(d,1)].',d,'b','*');
     hold on
     scatter([1:size(d,1)].',dtarget,'g');
     hold on
     scatter([1:size(d,1)].',dinit,'r');
+    legend('Fitted','Target','Initial')
 else
     fprintf('target is not the same size as the fitting')
 end

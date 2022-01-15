@@ -1,14 +1,20 @@
 clc;
 clear d;
-fillingfrac=0.5;
-d0=100;
-for i=1:20
-    d(2*i,1) = 50+5*cos(i);
-    d(2*i-1,1) = 50;
-end
 
-pts=10e3;
-targetpts=[linspace(400,1000,pts).' , zeros(pts,1)];
+N=20;
+d1=50;
+d2=50;
+for i=1:N
+    d(2*i,1) = d1+10*(rand()-0.5);
+    d(2*i-1,1) = d2+10*(rand()-0.5);
+end
+wlmin=400;
+wlmax=1000;
+pts=1e3;
+targetpts=zeros(pts,2);
+for i=1:pts
+    targetpts(pts-i+1,:)=[1/(1/wlmax+i*(1/wlmin-1/wlmax)/pts),0];
+end
 dtarget=d;
 count = 0;
 for l=targetpts(:,1).'    
