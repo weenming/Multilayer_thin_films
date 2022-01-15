@@ -10,7 +10,7 @@
 ## 运行方法
 - 在mainlm.m中，指定m个波长和对应的折射率输入targetpts就可以拟合。
 - 使用generate_targetpts 或 generate_targetpoints_from_picture来从膜厚度得到目标光谱/从图片读取目标光谱
-- 欲更改折射率，请在get_jacobi和get_R中一起改
+- 欲更改折射率，请在get_jacobian和get_R中一起改
 
 
 ## Reference
